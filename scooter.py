@@ -67,7 +67,7 @@ class Scooter():
         """
         db = sqlite3.connect('scooters.sqlite')
         cursor = db.cursor()
-        cursor.execute("UPDATE scooter SET customer_id=?, speed=?, rented=?,  WHERE id=?", (None, 0, 0, self._id))
+        cursor.execute("UPDATE scooter SET customer_id=?, speed=?, rented=?  WHERE id=?", (None, 0, 0, self._id))
         db.commit()
         db.close()
 
