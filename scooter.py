@@ -1,6 +1,6 @@
 import time
 import random
-import sqlite3
+import requests
 
 """
 Scooter class
@@ -43,33 +43,38 @@ class Scooter():
         """
         Connects user to scooter on start, used in start method
         """
-        db = sqlite3.connect('scooters.sqlite')
-        cursor = db.cursor()
-        cursor.execute("UPDATE scooter SET customer_id=?, rented=? WHERE id=?", (self._user, 1, self._id))
-        db.commit()
-        db.close()
+        data = {
+            'customer_id': self._user
+        }
+        url = 'http://localhost:8080/api/scooters/' + str(self._id)
+        requests.put(url, data=data)
 
     # Replace with http request
     def write_checkpoint_to_db(self):
         """
         Updates scooter data while running
         """
-        db = sqlite3.connect('scooters.sqlite')
-        cursor = db.cursor()
-        cursor.execute("UPDATE scooter SET speed=?, battery_level=?, lat_pos=?, lon_pos=? WHERE id=?", (self._speed, self._battery, self._position[0], self._position[1], self._id))
-        db.commit()
-        db.close()
+        data = {
+            'station_id': "setNull",
+            'speed_kph': self._speed,
+            'battery_level': self._battery,
+            'lat_pos': self._position[0],
+            'lon_pos': self._position[1]
+        }
+        url = 'http://localhost:8080/api/scooters/' + str(self._id)
+        requests.put(url, data=data)
 
     # Replace with http request
     def write_finish_to_db(self):
         """
         Writes to database on finish, used in stop method
         """
-        db = sqlite3.connect('scooters.sqlite')
-        cursor = db.cursor()
-        cursor.execute("UPDATE scooter SET customer_id=?, speed=?, rented=?  WHERE id=?", (None, 0, 0, self._id))
-        db.commit()
-        db.close()
+        data = {
+            'customer_id': "setNull",
+            'speed_kph': 0
+        }
+        url = 'http://localhost:8080/api/scooters/' + str(self._id)
+        requests.put(url, data=data)
 
     def start(self):
         """

@@ -24,4 +24,4 @@ Exempel: ```python3 app.py --id 1 --user 34 --runtime 20 --delay 5```
 I snabbsimuleringen slumpas hastighet och ny position varje sekund och batterinivån sjunker en procent.
 
 ## Databasen
-Just nu har klienten en sqlite-databas med fyra scootrar i en kopia av scooter-tabellen. För att kika i den under körning: ```sqlite3 scooters.sqlite -header -column "SELECT * FROM scooter;"```
+Klienten är nu kopplad till backend (localhost:8080).

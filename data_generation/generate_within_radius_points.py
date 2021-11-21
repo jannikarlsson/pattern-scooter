@@ -28,9 +28,9 @@ import pandas as pd
 # https://en.wikipedia.org/wiki/Earth_radius
 EARTH_RADIUS_KM = 6371
 # Skövde center according to Google Maps
-CENTER_P = {"lat": 58.396830, "lon": 13.853019}
-MAX_DISTANCE_KM = 5
-OUTPUT_FILE_NAME = 'skovde_latlon.csv'
+CENTER_P = {"lat": 59.8332051, "lon": 17.5183649}
+MAX_DISTANCE_KM = 10
+OUTPUT_FILE_NAME = 'uppsala_latlon.csv'
 # -- END CONSTANTS --
 
 def random_point(max_dist_km, center_lat, center_lon):
@@ -49,7 +49,7 @@ def random_point(max_dist_km, center_lat, center_lon):
     return lat_deg, lon_deg
 
 # use function to generate points
-rand_points = [random_point(5, CENTER_P['lat'], CENTER_P['lon']) for x in range(100)]
+rand_points = [random_point(5, CENTER_P['lat'], CENTER_P['lon']) for x in range(334)]
 lats = [p[0] for p in rand_points]
 lons = [p[1] for p in rand_points]
 
