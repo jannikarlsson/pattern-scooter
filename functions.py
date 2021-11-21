@@ -1,4 +1,4 @@
-import sqlite3
+import requests
 from scooter import Scooter
 
 def print_menu(selected):
@@ -28,7 +28,7 @@ def print_menu(selected):
             lon = input('Lon: ')
             selected.move(lat, lon)
         elif choice == "run":
-            selected.run(5)     
+            selected.run(20)     
         else:
             print("Try again")
 
@@ -37,17 +37,14 @@ def get_scooter_by_id(inp, user):
     """
     Gets scooter from database
     """
-    db = sqlite3.connect('scooters.sqlite')
-    cursor = db.cursor()
-    scooter = cursor.execute("SELECT * FROM scooter WHERE id=?", (inp))
-    for row in scooter:
-        id = row[0]
-        battery = row[10]
-        lat = row[5]
-        lon = row[6]
-        if id is not None and battery is not None:
-            selected = Scooter(id, battery, user, lat, lon)
-    db.close()
+    url = 'http://localhost:8080/api/scooters/' + inp
+    r = requests.get(url)
+    scooter = r.json()[0]
+    battery = scooter["battery_level"]
+    lat = scooter["lat_pos"]
+    lon = scooter["lon_pos"]
+    selected = Scooter(inp, battery, user, lat, lon)
+
     return selected
 
 def simulate(inp, user, runtime, delay=0, menu=0):
