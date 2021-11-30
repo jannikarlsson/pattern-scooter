@@ -37,7 +37,7 @@ def get_scooter_by_id(inp, user):
     """
     Gets scooter from database
     """
-    url = 'http://localhost:8080/api/scooters/' + inp
+    url = 'http://localhost:8000/api/scooters/' + inp
     r = requests.get(url)
     scooter = r.json()[0]
     battery = scooter["battery_level"]
