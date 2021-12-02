@@ -1,10 +1,12 @@
 import requests
 from scooter import Scooter
+import os
+
+scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/api/scooters/'
 
 def get_scooters(n):
     scooters = []
-    url = 'http://localhost:8000/api/scooters/'
-    r = requests.get(url).json()
+    r = requests.get(scooters_base_url).json()
 
     for i in range(n):
         data = {
@@ -24,7 +26,7 @@ def single(inp, user):
     """
     Gets scooter from database
     """
-    url = 'http://localhost:8000/api/scooters/' + inp
+    url = scooters_base_url + inp
     r = requests.get(url)
     scooter = r.json()[0]
     # battery = scooter["battery_level"]

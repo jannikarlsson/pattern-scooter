@@ -1,7 +1,11 @@
+import os
+
 from distance_calc import distance_funs as dfun
 import requests
 
 s = requests.Session()
+
+put_scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/api/scooters/'
 
 def get_step(speed, duration):
     """
@@ -25,19 +29,19 @@ def start(id, data):
     """
     Starts scooter, writes user and speed to db, removes station
     """
-    url = 'http://localhost:8000/api/scooters/' + str(id)
+    url = put_scooters_base_url + str(id)
     s.put(url, data=data)
 
 def checkpoint(id, data):
     """
     Writes position to db
     """
-    url = 'http://localhost:8000/api/scooters/' + str(id)
+    url = put_scooters_base_url + str(id)
     s.put(url, data=data)
 
 def stop(id, data):
     """
     Stops scooter, removes customer and sets speed to zero
     """
-    url = 'http://localhost:8000/api/scooters/' + str(id)
+    url = put_scooters_base_url + str(id)
     s.put(url, data=data)
