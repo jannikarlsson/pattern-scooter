@@ -6,8 +6,8 @@ EARTH_RADIUS_KM = 6371
 # Skövde center according to Google Maps, and
 # city zone radius in kilometers
 SKOVDE_GEO = {
-    "center_lat": 59.8332051,
-    "center_lon": 17.5183649,
+    "center_lat": 58.3941248,
+    "center_lon": 13.85349067,
     "radius": 5
 }
 LUND_GEO = {

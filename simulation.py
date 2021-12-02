@@ -1,31 +1,23 @@
-import requests
 import time
-from scooter import Scooter
+import create_scooters_functions as req_funs
 
-scooters = []
+max_runtime_in_seconds = 60
+clock = 0
 
-url = 'http://localhost:8000/api/scooters/'
-r = requests.get(url).json()
+# Gets selected number of scooters (from 1)
+scooters = req_funs.get_scooters(10)
 
-x = 0
-for i in r:
-    if x > 4:
-        break
-    scooters.append(Scooter(i["id"]+30, i["battery_level"], 2, i["lat_pos"], i["lon_pos"]))
-    x += 1
-
-runtime = 60
 for scooter in scooters:
-    scooter.start()
-while runtime > 0:
-    time.sleep(5)
+    scooter.start_scooter_rental()
+while max_runtime_in_seconds > 0:
+    time.sleep(10 - clock)
+    start = time.perf_counter()
     for scooter in scooters:
-        scooter.random_pos()
-        scooter.position()
-        scooter.lower_battery()
-        scooter.write_checkpoint_to_db()
-        if scooter._battery == 0:
-                scooter.stop()
-    runtime -= 5
+        if scooter.is_started():
+            scooter.move_to_next_position()
+    max_runtime_in_seconds -= 10
+    end = time.perf_counter()
+    clock = end - start
 for scooter in scooters:
-    scooter.stop()
+    if scooter.is_started():
+        scooter.end_scooter_rental()
