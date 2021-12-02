@@ -1,25 +1,23 @@
-import requests
 import time
-import req_funs
+import create_scooters_functions as req_funs
 
+max_runtime_in_seconds = 60
+clock = 0
 
-scooters = req_funs.get_scooters()
-runtime = 20
+# Gets selected number of scooters (from 1)
+scooters = req_funs.get_scooters(10)
 
 for scooter in scooters:
-    scooter.start()
-while runtime > 0:
-    # time.sleep(5)
+    scooter.start_scooter_rental()
+while max_runtime_in_seconds > 0:
+    time.sleep(10 - clock)
     start = time.perf_counter()
-
     for scooter in scooters:
-        scooter.next()
-        # scooter.lower_battery()
-        # scooter.write_checkpoint_to_db()
-        if scooter._battery == 0.00:
-                scooter.stop()
-    runtime -= 5
+        if scooter.is_started():
+            scooter.move_to_next_position()
+    max_runtime_in_seconds -= 10
     end = time.perf_counter()
-    print(end - start)
+    clock = end - start
 for scooter in scooters:
-    scooter.stop()
+    if scooter.is_started():
+        scooter.end_scooter_rental()
