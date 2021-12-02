@@ -2,10 +2,28 @@ import os
 
 from distance_calc import distance_funs as dfun
 import requests
+import time
 
-s = requests.Session()
+req_s = requests.Session()
 
-put_scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/api/scooters/'
+put_scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/scooter-client/scooters/'
+
+def put_nowait_resp(id, data):
+    url = put_scooters_base_url + str(id)
+    sent_request = False
+    while not sent_request:
+        try:
+            req_s.put(url, data=data, timeout=0.0000000001)
+            sent_request = True
+        except requests.exceptions.ReadTimeout:
+            sent_request = True
+        except requests.exceptions.ConnectionError as e:
+            print('--CONNECTIONERROR BEGIN--\n\n')
+            print(e)
+            print('\n\n--CONNECTIONERROR END--\n\n')
+            # backend is complaining that we sent too many requests,
+            # so wait a bit before trying again
+            time.sleep(2)
 
 def get_step(speed, duration):
     """
@@ -29,19 +47,16 @@ def start(id, data):
     """
     Starts scooter, writes user and speed to db, removes station
     """
-    url = put_scooters_base_url + str(id)
-    s.put(url, data=data)
+    put_nowait_resp(id, data)
 
 def checkpoint(id, data):
     """
     Writes position to db
     """
-    url = put_scooters_base_url + str(id)
-    s.put(url, data=data)
+    put_nowait_resp(id, data)
 
 def stop(id, data):
     """
     Stops scooter, removes customer and sets speed to zero
     """
-    url = put_scooters_base_url + str(id)
-    s.put(url, data=data)
+    put_nowait_resp(id, data)

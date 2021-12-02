@@ -2,7 +2,7 @@ import requests
 from scooter import Scooter
 import os
 
-scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/api/scooters/'
+scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/scooter-client/scooters/'
 
 def get_scooters(n):
     scooters = []
