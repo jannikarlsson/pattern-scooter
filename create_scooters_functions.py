@@ -1,21 +1,24 @@
 import requests
 from scooter import Scooter
 
-def get_scooters(n):
+def get_scooters(n, start):
     scooters = []
     url = 'http://localhost:8000/api/scooters/'
     r = requests.get(url).json()
 
+    n = int(n)
+    start = int(start)
+
     for i in range(n):
         data = {
-            "id": r[i]["id"],
-            "battery": float(r[i]["battery_level"]),
-            "user": 2,
-            "lat": r[i]["lat_pos"],
-            "lon": r[i]["lon_pos"],
-            "city": r[i]["city_id"]
+            "id": r[i+start]["id"],
+            "battery": float(r[i+start]["battery_level"]),
+            "user": r[i+start]["id"],
+            "lat": r[i+start]["lat_pos"],
+            "lon": r[i+start]["lon_pos"],
+            "city": r[i+start]["city_id"]
         }
-        if r[i]["status"] == "active" and float(r[i]["battery_level"]) > 5.0:
+        if r[i+start]["status"] == "active" and float(r[i+start]["battery_level"]) > 5.0:
             scooters.append(Scooter(data))
     return scooters
 
