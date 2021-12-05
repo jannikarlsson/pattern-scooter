@@ -16,4 +16,4 @@ COPY . .
 ENV FLASK_APP=flask_app.py
 ENV REQUEST_ROOT_URL=http://backend:8000/api
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]

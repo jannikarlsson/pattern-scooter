@@ -7,6 +7,7 @@ load_dotenv()
 
 import os
 from concurrent.futures import ThreadPoolExecutor
+import random
 import time
 
 import create_scooters_functions as req_funs
@@ -20,6 +21,10 @@ THREAD_STAGGER_S = float(os.environ['THREAD_STAGGER_S'])
 def run_simulations():
     # get selected number of scooters (from 1)
     scooters = req_funs.get_scooters(TOTAL_NUM_SCOOTERS)
+
+    # shuffle scooters to make sure that some scooters in each city are being
+    # moved.
+    random.shuffle(scooters)
 
     # split list of scooters up to enable delegation of work between
     # threads
