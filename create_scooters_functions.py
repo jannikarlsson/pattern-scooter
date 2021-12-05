@@ -12,7 +12,7 @@ def get_scooters(n):
         data = {
             "id": r[i]["id"],
             "battery": float(r[i]["battery_level"]),
-            "user": 2,
+            "user": i+1,
             "lat": r[i]["lat_pos"],
             "lon": r[i]["lon_pos"],
             "city": r[i]["city_id"]
