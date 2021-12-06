@@ -1,3 +1,10 @@
+from dotenv import load_dotenv
+
+# load environment variables from .env.
+# (this must be done before importing from
+# create_scooters_functions and simulation_flow_functions)
+load_dotenv()
+
 import create_scooters_functions as req_funs
 
 def interactive_mode(selected):
@@ -23,8 +30,10 @@ def interactive_mode(selected):
         else:
             print("Try again")
 
-inp = input('Enter id: ')
-user = int(input('Enter user id: '))
-selected = req_funs.single(inp, user)
-interactive_mode(selected)
+if __name__ == "__main__":
+    inp = input('Enter id: ')
+    user = int(input('Enter user id: '))
+
+    selected = req_funs.single(inp, user)
+    interactive_mode(selected)
 

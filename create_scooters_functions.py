@@ -29,8 +29,6 @@ def single(inp, user):
     url = scooters_base_url + inp
     r = requests.get(url)
     scooter = r.json()[0]
-    # battery = scooter["battery_level"]
-    # pos = [scooter["lat_pos"], scooter["lon_pos"]]
     data = {
         "id": inp,
         "battery": float(scooter["battery_level"]),
