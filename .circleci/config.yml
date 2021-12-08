@@ -39,5 +39,5 @@ workflows:
     upload-to-codecov:
       jobs:
         - build
-          post-steps:
-                  - codecov/upload
+        post-steps:
+          - codecov/upload
