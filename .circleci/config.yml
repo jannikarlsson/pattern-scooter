@@ -18,10 +18,10 @@ jobs:
       #       coverage run unittest discover -v
       #     name: Test
       - run:
-        name: Setup testing environment
-        command: |
-          pip install '.[test]' --user
-          echo $HOME
+          name: Setup testing environment
+          command: |
+            pip install '.[test]' --user
+            echo $HOME
       - run:
           name: Run Tests
           command: |
