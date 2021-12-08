@@ -22,14 +22,14 @@ jobs:
         command: |
           pip install '.[test]' --user
           echo $HOME
-    - run:
-        name: Run Tests
-        command: |
-          $HOME/.local/bin/coverage run -m unittest discover
-          $HOME/.local/bin/coverage report
-          $HOME/.local/bin/coverage html  # open htmlcov/index.html in a browser
-    - store_artifacts:
-        path: htmlcov
+      - run:
+          name: Run Tests
+          command: |
+            $HOME/.local/bin/coverage run -m unittest discover
+            $HOME/.local/bin/coverage report
+            $HOME/.local/bin/coverage html  # open htmlcov/index.html in a browser
+      - store_artifacts:
+          path: htmlcov
 orbs:
   python: circleci/python@1.1.0
 version: 2.1
