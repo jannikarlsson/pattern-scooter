@@ -6,10 +6,7 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - python/install-packages:
-          pip-dependency-file: requirements.txt
-          pkg-manager: pip
-      - python/install-packages:
-          args: responses
+          pip-dependency-file: requirements.txt responses
           pkg-manager: pip
       - run:
           command:
