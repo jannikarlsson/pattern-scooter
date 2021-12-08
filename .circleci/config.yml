@@ -30,14 +30,14 @@ jobs:
             coverage html
       - store_artifacts:
           path: htmlcov
+      - codecov/upload:
+          file: '.coverage'
+          token: 19e93698-d2df-4ff0-b9fd-3c3bb2ae8e84
 orbs:
   python: circleci/python@1.1.0
-  codecov: codecov/codecov@3.2.2
+  codecov: codecov/codecov@3.1.1
 version: 2.1
 workflows:
   main:
-    upload-to-codecov:
-      jobs:
-        - build
-        post-steps:
-          - codecov/upload
+    jobs:
+      - build
