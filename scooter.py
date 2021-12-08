@@ -16,7 +16,7 @@ class Scooter():
         # Sets scooter details
         self._id = data["id"]
         self._battery = data["battery"]
-        self._speed = self.random_speed()
+        self._speed = rfun.random_speed()
         self._started = False
         self._user = data["user"]
         self._position = [float(data["lat"]), float(data["lon"])]
@@ -51,6 +51,8 @@ class Scooter():
         """
         next_step = rfun.get_next(self._position[0], self._position[1], self._target[0], self._target[1], self._step)
         self.move(next_step[0], next_step[1])
+        self.lower_battery()
+        self.write_checkpoint_to_db()
         print('Scooter {} moved forward'.format(self._id))
         if self._battery < 0.02 or self._remainder < 0.1:
             self.end_scooter_rental()
@@ -93,8 +95,6 @@ class Scooter():
         """
         self._position = [lat, lon]
         self._remainder = dfun.calculate_geo_distance(self._position[0], self._position[1], self._target[0], self._target[1])
-        self.lower_battery()
-        self.write_checkpoint_to_db()
         # print('New position is {}'.format(self._position))
         # print('Distance to target is {}'.format(self._remainder))
         # print('Battery level is {}'.format(self._battery))
@@ -105,12 +105,6 @@ class Scooter():
         """
         self._battery -= 1/6
         # print('Battery level is {}'.format(self._battery))
-
-    def random_speed(self):
-        """
-        Randomizes speed within reason
-        """
-        return random.randint(10, 20)
 
 
     # Methods for writing to database
@@ -156,7 +150,6 @@ class Scooter():
         """
         self._battery = 100
         print('Battery level is now at 100 per cent')
-        self.write_checkpoint_to_db()
     
     def print_nice(self):
         """
