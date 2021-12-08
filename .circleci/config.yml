@@ -10,7 +10,7 @@ jobs:
           pkg-manager: pip
       - run:
           command:
-            python -m unittest discover
+            python -m unittest discover -v
           name: Test
 orbs:
   python: circleci/python@1.1.0
