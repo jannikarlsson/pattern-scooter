@@ -25,9 +25,9 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            $HOME/.local/bin/coverage run unittest discover
-            $HOME/.local/bin/coverage report
-            $HOME/.local/bin/coverage html
+            coverage run unittest discover
+            coverage report
+            coverage html
       - store_artifacts:
           path: htmlcov
 orbs:
