@@ -1,14 +1,14 @@
-import random
-from distance_calc import distance_funs as dfun
-import run_scooter_functions as rfun
-
 """
 Scooter class
 """
+from distance_calc import distance_funs as dfun
+import run_scooter_functions as rfun
+
 class Scooter():
     """
     Scooter class
-    """    
+    """
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, data):
         """
         Constructor function
@@ -16,7 +16,7 @@ class Scooter():
         # Sets scooter details
         self._id = data["id"]
         self._battery = data["battery"]
-        self._speed = self.random_speed()
+        self._speed = rfun.random_speed()
         self._started = False
         self._user = data["user"]
         self._position = [float(data["lat"]), float(data["lon"])]
@@ -27,7 +27,12 @@ class Scooter():
         elif data["city"] == 3:
             self._target = dfun.random_p_uppsala()
         self._step = rfun.get_step(self._speed, 10)
-        self._remainder = dfun.calculate_geo_distance(self._position[0], self._position[1], self._target[0], self._target[1])
+        self._remainder = dfun.calculate_geo_distance(
+            self._position[0],
+            self._position[1],
+            self._target[0],
+            self._target[1]
+        )
 
     # Ride methods
 
@@ -39,7 +44,7 @@ class Scooter():
             if self._battery > 0:
                 self.turn_engine_on()
                 self.write_user_to_db()
-                print('Scooter {} was started'.format(self._id))
+                print(f'Scooter {self._id} was started')
             else:
                 print('The battery is dead, charge the scooter.')
         else:
@@ -49,9 +54,17 @@ class Scooter():
         """
         Move to next position
         """
-        next_step = rfun.get_next(self._position[0], self._position[1], self._target[0], self._target[1], self._step)
+        next_step = rfun.get_next(
+            self._position[0],
+            self._position[1],
+            self._target[0],
+            self._target[1],
+            self._step
+        )
         self.move(next_step[0], next_step[1])
-        print('Scooter {} moved forward'.format(self._id))
+        self.lower_battery()
+        self.write_checkpoint_to_db()
+        print(f'Scooter {self._id} moved forward')
         if self._battery < 0.02 or self._remainder < 0.1:
             self.end_scooter_rental()
 
@@ -62,7 +75,7 @@ class Scooter():
         if self._started is True:
             self.turn_engine_off()
             self.write_finish_to_db()
-            print('Scooter {} was returned'.format(self._id))
+            print(f'Scooter {self._id} was returned')
         else:
             print('Scooter is not running')
 
@@ -92,9 +105,12 @@ class Scooter():
         Changes position
         """
         self._position = [lat, lon]
-        self._remainder = dfun.calculate_geo_distance(self._position[0], self._position[1], self._target[0], self._target[1])
-        self.lower_battery()
-        self.write_checkpoint_to_db()
+        self._remainder = dfun.calculate_geo_distance(
+            self._position[0],
+            self._position[1],
+            self._target[0],
+            self._target[1]
+        )
         # print('New position is {}'.format(self._position))
         # print('Distance to target is {}'.format(self._remainder))
         # print('Battery level is {}'.format(self._battery))
@@ -105,12 +121,6 @@ class Scooter():
         """
         self._battery -= 1/6
         # print('Battery level is {}'.format(self._battery))
-
-    def random_speed(self):
-        """
-        Randomizes speed within reason
-        """
-        return random.randint(10, 20)
 
 
     # Methods for writing to database
@@ -156,18 +166,21 @@ class Scooter():
         """
         self._battery = 100
         print('Battery level is now at 100 per cent')
-        self.write_checkpoint_to_db()
-    
+
     def print_nice(self):
         """
         Prints scooter deets
         """
-        print('Scooter id is {}'.format(self._id))
-        print('User id is {}'.format(self._user))
-        print('Current speed is {}'.format(self._speed))
-        print('Battery level is {}'.format(self._battery))
-        print('Position is {}, {}'.format(self._position[0], self._position[1]))
-        print('Scooter is running') if self._started else print('Scooter is not running')
-        print('Target is {}, {}'.format(self._target[0], self._target[1]))
-        print('Step length is {}'.format(self._step))
-        print('{} km remains'.format(self._remainder))
+        print(f'Scooter id is {self._id}')
+        print(f'User id is {self._user}')
+        print(f'Current speed is {self._speed}')
+        print(f'Battery level is {self._battery}')
+        print(f'Position is {self._position[0]}, {self._position[1]}')
+        if self._started:
+            print('Scooter is running')
+        else:
+            print('Scooter is not running')
+        print(f'Target is {self._target[0]}, {self._target[1]}')
+        print(f'Step length is {self._step}')
+        print(f'{self._remainder} km remains')
+        

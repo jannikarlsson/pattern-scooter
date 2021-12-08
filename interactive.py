@@ -1,3 +1,9 @@
+"""
+Interactive mode file
+"""
+# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-order
+
 from dotenv import load_dotenv
 
 # load environment variables from .env.
@@ -26,7 +32,7 @@ def interactive_mode(selected):
         elif choice == "see":
             selected.print_nice()
         elif choice == "charge":
-            selected.fill_battery()   
+            selected.fill_battery()
         else:
             print("Try again")
 
@@ -34,6 +40,4 @@ if __name__ == "__main__":
     inp = input('Enter id: ')
     user = int(input('Enter user id: '))
 
-    selected = req_funs.single(inp, user)
-    interactive_mode(selected)
-
+    interactive_mode(req_funs.single(inp, user))

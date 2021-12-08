@@ -2,6 +2,7 @@ import os
 
 from distance_calc import distance_funs as dfun
 import requests
+import random
 
 req_s = requests.Session()
 
@@ -28,6 +29,12 @@ def get_next(lat_pos, lon_pos, target_lat, target_lon, step):
     next_lat = lat_pos + lat_diff_per_step
     next_lon = lon_pos + lon_diff_per_step
     return (next_lat, next_lon)
+
+def random_speed():
+    """
+    Randomizes speed within reason
+    """
+    return random.randint(10, 20)
 
 def start(id, data):
     """

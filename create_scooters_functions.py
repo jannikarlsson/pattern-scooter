@@ -1,23 +1,30 @@
+"""
+Create scooters functions
+"""
+
+import os
 import requests
 from scooter import Scooter
-import os
 
 scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/scooter-client/scooters/'
 
-def get_scooters(n):
+def get_scooters(number_of_scooters):
+    """
+    Get all scooters from database
+    """
     scooters = []
-    r = requests.get(scooters_base_url).json()
+    res = requests.get(scooters_base_url).json()
 
-    for i in range(n):
+    for i in range(number_of_scooters):
         data = {
-            "id": r[i]["id"],
-            "battery": float(r[i]["battery_level"]),
+            "id": res[i]["id"],
+            "battery": float(res[i]["battery_level"]),
             "user": i+1,
-            "lat": r[i]["lat_pos"],
-            "lon": r[i]["lon_pos"],
-            "city": r[i]["city_id"]
+            "lat": res[i]["lat_pos"],
+            "lon": res[i]["lon_pos"],
+            "city": res[i]["city_id"]
         }
-        if r[i]["status"] == "active" and float(r[i]["battery_level"]) > 5.0:
+        if res[i]["status"] == "active" and float(res[i]["battery_level"]) > 5.0:
             scooters.append(Scooter(data))
     return scooters
 
@@ -27,8 +34,8 @@ def single(inp, user):
     Gets scooter from database
     """
     url = scooters_base_url + inp
-    r = requests.get(url)
-    scooter = r.json()[0]
+    res = requests.get(url)
+    scooter = res.json()[0]
     data = {
         "id": inp,
         "battery": float(scooter["battery_level"]),

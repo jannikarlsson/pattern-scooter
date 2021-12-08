@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main.svg?style=svg)](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main)
+[![CircleCI](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main.svg?style=svg)](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main) [![codecov](https://codecov.io/gh/jannikarlsson/pattern-scooter/branch/main/graph/badge.svg?token=M7OUB0KUIE)](https://codecov.io/gh/jannikarlsson/pattern-scooter)
 
 # Cykelklienten
 

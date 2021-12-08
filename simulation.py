@@ -1,3 +1,9 @@
+"""
+Main simulation file
+"""
+# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-order
+
 from dotenv import load_dotenv
 
 # load environment variables from .env.
@@ -19,6 +25,7 @@ NUM_THREADS = int(os.environ['NUM_THREADS'])
 THREAD_STAGGER_S = float(os.environ['THREAD_STAGGER_S'])
 
 def run_simulations():
+    """ Run simulations """
     # get selected number of scooters (from 1)
     scooters = req_funs.get_scooters(TOTAL_NUM_SCOOTERS)
 
