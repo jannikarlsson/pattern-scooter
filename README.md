@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main.svg?style=svg)](https://circleci.com/gh/jannikarlsson/pattern-scooter/tree/main)
+
 # Cykelklienten
 
 ## Simulering
