@@ -15,7 +15,7 @@ jobs:
           pkg-manager: pip
       - run:
           command:
-            coverage -m unittest discover -v
+            coverage unittest discover -v
           name: Test
 orbs:
   python: circleci/python@1.1.0
