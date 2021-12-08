@@ -8,14 +8,10 @@ jobs:
       - python/install-packages:
           pip-dependency-file: requirements.txt
           pkg-manager: pip
-      # - python/install-packages:
-      #     args: unittest
-      #     pkg-manager: pip
-      #     pypi-cache: false
-      # - run:
-      #     command: |
-      #       unittest --version
-      #     name: Test
+      - run:
+          command:
+            python -m unittest discover
+          name: Test
 orbs:
   python: circleci/python@1.1.0
 version: 2.1
