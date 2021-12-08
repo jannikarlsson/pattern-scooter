@@ -1,9 +1,10 @@
 jobs:
   build:
-    working_directory: ~/scooter
     executor: python/default
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp
       - python/install-packages:
           pkg-manager: pip
       - python/install-packages:
