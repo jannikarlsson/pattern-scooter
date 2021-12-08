@@ -32,8 +32,12 @@ jobs:
           path: htmlcov
 orbs:
   python: circleci/python@1.1.0
+  codecov: codecov/codecov@3.2.2
 version: 2.1
 workflows:
   main:
-    jobs:
-      - build
+    upload-to-codecov:
+      jobs:
+        - build
+          post-steps:
+                  - codecov/upload
