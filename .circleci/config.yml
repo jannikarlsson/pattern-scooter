@@ -8,6 +8,9 @@ jobs:
       - python/install-packages:
           pip-dependency-file: requirements.txt
           pkg-manager: pip
+      - python/install-packages:
+          args: responses
+          pkg-manager: pip
       - run:
           command:
             python -m unittest discover -v

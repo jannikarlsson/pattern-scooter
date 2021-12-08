@@ -8,13 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import unittest
+import responses
 import os
 from scooter import Scooter
 
 class TestScooter(unittest.TestCase):
     """ Submodule for unittests, derives from unittest.TestCase """
-    # pass
-
     def setUp(self):
         """ Create object for all tests """
         # Arrange
@@ -27,6 +26,14 @@ class TestScooter(unittest.TestCase):
             "city": 1
         }
         self.scooter = Scooter(data)
+
+        put_scooters_base_url = os.environ['REQUEST_ROOT_URL'] + '/scooter-client/scooters/'
+        responses.add(
+            responses.Response(
+            method='PUT',
+            url=put_scooters_base_url + str(self.scooter._id)
+            )
+        )
 
     def tearDown(self):
         """ Remove dependencies after test """
@@ -43,20 +50,6 @@ class TestScooter(unittest.TestCase):
         self.assertTrue(self.scooter._target)
         self.assertEqual(self.scooter._started, False)
 
-    # def test_start_scooter(self):
-    #     """Test that scooter starts"""
-    #     # Act
-    #     self.scooter.start()
-    #     # Assert
-    #     self.assertTrue(self.scooter._started)
-
-    # def test_stop_scooter(self):
-    #     """Test that scooter stops"""
-    #     # Act
-    #     self.scooter.stop()
-    #     # Assert
-    #     self.assertFalse(self.scooter._started)
-
     def test_lower_battery(self):
         """ Test that battery lowers """
         # Arrange
@@ -66,7 +59,6 @@ class TestScooter(unittest.TestCase):
         self.scooter.lower_battery()
         # Assert
         self.assertLess(self.scooter._battery, old_battery)
-        # self.assertEqual(old_battery-self.scooter._battery, battery_loss)
 
     def test_fill_battery(self):
         """ Test that battery fills """
@@ -111,3 +103,58 @@ class TestScooter(unittest.TestCase):
         self.assertNotEqual(self.scooter._position[0], old_lat)
         self.assertNotEqual(self.scooter._position[1], old_lon)
         self.assertNotEqual(self.scooter._remainder, old_remainder)
+
+    def test_start_move(self):
+        """ Test that start process works """
+        # Act
+        self.scooter.start_scooter_rental()
+        # Assert
+        self.assertTrue(self.scooter._started)
+
+        # Arrange
+        self.scooter._started = False
+        self.scooter._battery = 0
+        # Act
+        self.scooter.start_scooter_rental()
+        # Assert
+        self.assertFalse(self.scooter._started)
+
+    def test_move_move(self):
+        """ Test that checkpoint works """
+        # Arrange
+        self.scooter._started = True
+        old_lat = self.scooter._position[0]
+        old_lon = self.scooter._position[1]
+        old_remainder = self.scooter._remainder
+        old_battery = self.scooter._battery
+        # Act
+        self.scooter.move_to_next_position()
+        # Assert
+        self.assertNotEqual(self.scooter._position[0], old_lat)
+        self.assertNotEqual(self.scooter._position[1], old_lon)
+        self.assertNotEqual(self.scooter._remainder, old_remainder)
+        self.assertLess(self.scooter._battery, old_battery)
+        self.assertTrue(self.scooter._started)
+
+        # Arrange
+        self.scooter._battery = 0.01
+        # Act
+        self.scooter.move_to_next_position()
+        # Assert
+        self.assertFalse(self.scooter._started)
+
+        # Arrange
+        self.scooter._remainder = 0.01
+        # Act
+        self.scooter.move_to_next_position()
+        # Assert
+        self.assertFalse(self.scooter._started)
+
+    def test_end_move(self):
+        # Arrange
+        self.scooter._started = True
+        # Act
+        self.scooter.end_scooter_rental()
+        # Assert
+        self.assertFalse(self.scooter._started)
+        self.assertEqual(self.scooter._speed, 0)
