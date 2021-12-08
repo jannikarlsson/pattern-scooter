@@ -91,6 +91,7 @@ class TestScooter(unittest.TestCase):
         self.assertFalse(self.scooter.is_started())
         self.assertEqual(self.scooter._speed, 0)
 
+    @responses.activate
     def test_new_position(self):
         """ Test that position and remaining distance are changed """
         # Arrange
@@ -104,6 +105,7 @@ class TestScooter(unittest.TestCase):
         self.assertNotEqual(self.scooter._position[1], old_lon)
         self.assertNotEqual(self.scooter._remainder, old_remainder)
 
+    @responses.activate
     def test_start_move(self):
         """ Test that start process works """
         # Act
@@ -119,6 +121,7 @@ class TestScooter(unittest.TestCase):
         # Assert
         self.assertFalse(self.scooter._started)
 
+    @responses.activate
     def test_move_move(self):
         """ Test that checkpoint works """
         # Arrange
@@ -150,6 +153,7 @@ class TestScooter(unittest.TestCase):
         # Assert
         self.assertFalse(self.scooter._started)
 
+    @responses.activate
     def test_end_move(self):
         # Arrange
         self.scooter._started = True
