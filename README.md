@@ -11,6 +11,8 @@ To install dependencies, run `pip install -r requirements.txt`
 
 Use `python3 simulation.py` to start a simulation of scooters from the database. The default number of scooters is 800, which can be changed in `.env`, along with the default 30 second length of a journey. The scooters are run in separate threads, the number of which can also be changed in `.env`, to offset the trips and enable concurrent requests to the backend service. The simulation will stop when all scooters have run.
 
+You may also opt for running a simple Flask server which can be used for triggering the simulation. To do this, run e.g. `FLASK_APP=flask_app.py python3 -m flask run`. Once the server is up and running, you may do a GET request to `http://localhost:5000`. __Please note__ that the request will not be resolved until the simulation has finished running. The simulation might take a few seconds to get started. Please refrain from making another request to `http://localhost:5000` before the simulation has finished running.
+
 ## Interactive mode
 
 Use `python3 interactive.py` to run the client interactively in the terminal. You will be prompted for the scooter id and user id, and then get a menu with various options.
